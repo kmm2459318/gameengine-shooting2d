@@ -5,18 +5,33 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //移動関係
     const float LOAD_WIDTH = 20f;//縦方向の移動可能距離
     const float MOVE_MAX_X = 2f;//横方向の移動可能距離
     const float MOVE_MAX_Y = 4.5f;//横方向の移動可能距離
     Vector2 previousPos;//1f前のマウスの位置
     Vector2 currentPos;//現在のマウスの位置
+
+    //体力関係
     int MaxHP = 100;
     float HP = 0;
 
-    public Image HPbar;
+    public Image HPbar; // HPBarの画像
+
+    //ダメージ受けたときの点滅
+    public Renderer PlayerRenderer; //　プレイヤーの画像データ
+    public Color blinkColor = Color.red; // 点滅時の色
+    float blinkInterval = 0.1f;   // 点滅の間隔
+    int blinkCount = 5; // 点滅の回数
+    bool Hit = false; // 点滅中かどうか
+    private Color originalColor; // プレイヤーのデフォルトカラー
+
+    
 
     void Start()
     {
+        // 元の色を保存
+        originalColor = PlayerRenderer.material.color;
         HP = MaxHP;
     }
     void Update()
@@ -57,17 +72,22 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if ((Hit == false))
         {
-            Debug.Log("Enemy");
-            HP -= 10;
-        }
-        if (collision.tag == "EnemyShot")
-        {
-            EnemyShotController EnemyShot = collision.GetComponent<EnemyShotController>();
-            Destroy(collision.gameObject);
-            Debug.Log("Shot");
-            HP -= EnemyShot.Damage;
+            if (collision.tag == "Enemy")
+            {
+                Debug.Log("Enemy");
+                HP -= 10;
+                StartCoroutine(Blink()); // 点滅の呼び出し
+            }
+            if (collision.tag == "EnemyShot")
+            {
+                EnemyShotController EnemyShot = collision.GetComponent<EnemyShotController>();
+                Destroy(collision.gameObject);
+                Debug.Log("Shot");
+                HP -= EnemyShot.Damage;
+                StartCoroutine(Blink());
+            }
         }
         if (collision.tag == "HeelItem")
         {
@@ -85,5 +105,21 @@ public class PlayerController : MonoBehaviour
     {
         float fillAmount = HP / MaxHP; // HPの割合を計算
         HPbar.fillAmount = fillAmount;   // HPバーのfillAmountに反映
+    }
+
+    IEnumerator Blink()
+    {
+        Hit = true;
+        for(int i = 1; i<= blinkCount; i++)
+        {
+            // オブジェクトの色を変更
+            PlayerRenderer.material.color = blinkColor;
+            yield return new WaitForSeconds(blinkInterval);
+
+            // 元の色に戻す
+            PlayerRenderer.material.color = originalColor;
+            yield return new WaitForSeconds(blinkInterval);
+        }
+        Hit = false;
     }
 }
