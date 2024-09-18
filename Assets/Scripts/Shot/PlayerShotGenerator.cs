@@ -1,6 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class ShotGenerator : MonoBehaviour
+public class PlayerShotGenerator : MonoBehaviour
 {
     // 弾を発射するオブジェクトの位置を取得
     public Transform firePoint;
@@ -8,10 +9,12 @@ public class ShotGenerator : MonoBehaviour
     // 弾をオブジェクトとして取得
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
+    public GameObject HyperShot;
 
     private GameObject currentBulletPrefab; // 現在の弾のプレハブ
 
-    public float Power = 1f;
+    public float Power = 1f; // 現在のレベル
+    public int Coin = 0; // 現在のコイン数
 
     private float timeCounter = 1f;
     private float reloadTime = 1.0f; // 初期値として1秒
@@ -67,10 +70,25 @@ public class ShotGenerator : MonoBehaviour
     {
         if (collision.tag == "Power")
         {
-            Power += 2;
+            Power += 0.25f;
 
             // Powerが増えたらリロード時間を再計算
             UpdateReloadTime();
+        }
+        if(collision.tag == "coin")
+        {
+            Coin++;
+            Debug.Log(Coin);
+        }
+    }
+
+    public void HyperShotTrigger()
+    {
+        if(Coin >= 3)
+        {
+            Coin -= 3;
+            PlayerController playerController = currentBulletPrefab.GetComponent<PlayerController>();
+            Instantiate(HyperShot, firePoint.position, firePoint.rotation);
         }
     }
 }

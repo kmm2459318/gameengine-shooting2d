@@ -11,6 +11,7 @@ TagManager:
   - HomingShot
   - Power
   - HeelItem
+  - HyperShot
   layers:
   - Default
   - TransparentFX

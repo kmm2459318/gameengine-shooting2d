@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     //‘Ì—ÍŠÖŒW
     int MaxHP = 100;
-    float HP = 0;
+    public float HP = 0; // ShotController‚Å’l‚ğ“üè‚·‚é‚½‚ßpublic
 
     public Image HPbar; // HPBar‚Ì‰æ‘œ
 
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //–ˆ‰ñHP‚ğí‚é
-        HP -= 0.03f;
+        HP -= 0.02f;
         //HP‚ÌXV
         UpdateHPBar();
 

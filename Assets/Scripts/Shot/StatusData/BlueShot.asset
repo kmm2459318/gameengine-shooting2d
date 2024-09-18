@@ -16,3 +16,4 @@ MonoBehaviour:
   ShotName: BlueShot
   attackPower: 2
   speed: 8
+  Compensation: 1

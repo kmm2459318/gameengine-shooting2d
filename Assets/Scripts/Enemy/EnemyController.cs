@@ -82,15 +82,16 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //必殺技、貫通ショットなので消さない
+        if (collision.tag == "HyperShot")
+        {
+            Damege(collision);
+        }
+        //通常ショット、貫通しないので消す
         if (collision.tag == "Shot")
         {
-            ShotController shotController = collision.GetComponent<ShotController>();
-            if (shotController != null)
-            {
-                HP -= shotController.Damage;
-                Destroy(collision.gameObject);
-                Debug.Log("Enemy hit! Remaining HP: " + HP);
-            }
+            Damege(collision);
+            Destroy(collision.gameObject);
         }
         if (collision.tag == "Player")
         {
@@ -98,12 +99,24 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //アイテムdropの処理
     private void DropItem()
     {
         if (EnemyData.dropItemPrefab != null && Random.value < EnemyData.dropChance)
         {
             int DropItems = EnemyData.dropItemPrefab.Length;
             Instantiate(EnemyData.dropItemPrefab[Random.Range(0,DropItems)], transform.position, Quaternion.identity);
+        }
+    }
+
+    //ダメージの処理
+    private void Damege(Collider2D collision)
+    {
+        ShotController shotController = collision.GetComponent<ShotController>();
+        if (shotController != null)
+        {
+            HP -= shotController.Damage;
+            Debug.Log("Enemy hit! Remaining HP: " + HP);
         }
     }
 }
