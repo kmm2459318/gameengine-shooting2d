@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -12,10 +13,14 @@ public class PlayerController : MonoBehaviour
     Vector2 previousPos;//1f前のマウスの位置
     Vector2 currentPos;//現在のマウスの位置
 
+    public SplineAnimate splineAnimate; // SplineAnimateをアタッチしたオブジェクトを設定
+
     //体力関係
     int MaxHP = 100;
     public float HP = 0; // ShotControllerで値を入手するためpublic
-
+    int HeelPoint = 20; // 回復する量
+    int EnemyDamege = 10; // 敵に触れたときのダメージ
+    float SlipDamege = 0.025f;
     public Image HPbar; // HPBarの画像
 
     //ダメージ受けたときの点滅
@@ -34,52 +39,58 @@ public class PlayerController : MonoBehaviour
         originalColor = PlayerRenderer.material.color;
         HP = MaxHP;
     }
+
     void Update()
     {
-        // スワイプによる移動処理
-        if (Input.GetMouseButtonDown(0))
+        // Spline上の進行度が1.0に達したかどうかを確認
+        if (splineAnimate.normalizedTime >= 1.0f)
         {
-            previousPos = Input.mousePosition;
+            Debug.Log("Splineの終了に到達しました！");
+            // スワイプによる移動処理
+            if (Input.GetMouseButtonDown(0))
+            {
+                previousPos = Input.mousePosition;
+            }
+            if (Input.GetMouseButton(0))
+            {
+                // スワイプによる移動距離を取得
+                currentPos = Input.mousePosition;
+                float diffDistanceX = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
+                float diffDistanceY = (currentPos.y - previousPos.y) / Screen.width * LOAD_WIDTH;
+
+                // 次のローカルx座標を設定 ※道の外にでないように
+                float newX = Mathf.Clamp(transform.localPosition.x + diffDistanceX, -MOVE_MAX_X, MOVE_MAX_X);
+                float newY = Mathf.Clamp(transform.localPosition.y + diffDistanceY, -MOVE_MAX_Y, MOVE_MAX_Y);
+                transform.localPosition = new Vector3(newX, newY, 0);
+
+                // タップ位置を更新
+                previousPos = currentPos;
+            }
+
+
+            if (HP <= 0)
+            {
+                Debug.Log("aaa");
+                Destroy(gameObject);
+            }
+
+            //HPの更新
+            UpdateHPBar();
         }
-        if (Input.GetMouseButton(0))
-        {
-            // スワイプによる移動距離を取得
-            currentPos = Input.mousePosition;
-            float diffDistanceX = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-            float diffDistanceY = (currentPos.y - previousPos.y) / Screen.width * LOAD_WIDTH;
-
-            // 次のローカルx座標を設定 ※道の外にでないように
-            float newX = Mathf.Clamp(transform.localPosition.x + diffDistanceX, -MOVE_MAX_X, MOVE_MAX_X);
-            float newY = Mathf.Clamp(transform.localPosition.y + diffDistanceY, -MOVE_MAX_Y, MOVE_MAX_Y);
-            transform.localPosition = new Vector3(newX, newY, 0);
-
-            // タップ位置を更新
-            previousPos = currentPos;
-        }
-
-
-        if (HP <= 0)
-        {
-            Debug.Log("aaa");
-            Destroy(gameObject);
-        }
-
-        //毎回HPを削る
-        HP -= 0.02f;
-        //HPの更新
-        UpdateHPBar();
-
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //自機が点滅していないときのみダメージ処理
         if ((Hit == false))
         {
+            //敵本体
             if (collision.tag == "Enemy")
             {
                 Debug.Log("Enemy");
-                HP -= 10;
+                HP -= EnemyDamege;
                 StartCoroutine(Blink()); // 点滅の呼び出し
             }
+            //敵の弾
             if (collision.tag == "EnemyShot")
             {
                 EnemyShotController EnemyShot = collision.GetComponent<EnemyShotController>();
@@ -89,9 +100,11 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(Blink());
             }
         }
+        //回復処理
         if (collision.tag == "HeelItem")
         {
-            HP += 50;
+            Destroy(collision.gameObject);
+            HP += HeelPoint;
             if(HP >= MaxHP)
             {
                 HP = MaxHP;
@@ -107,6 +120,7 @@ public class PlayerController : MonoBehaviour
         HPbar.fillAmount = fillAmount;   // HPバーのfillAmountに反映
     }
 
+    //点滅時の処理
     IEnumerator Blink()
     {
         Hit = true;

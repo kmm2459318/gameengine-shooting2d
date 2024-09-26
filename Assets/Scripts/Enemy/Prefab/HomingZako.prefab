@@ -114,7 +114,8 @@ GameObject:
   - component: {fileID: 5637717725953551526}
   - component: {fileID: 7889825361057614856}
   - component: {fileID: 4294123308616779956}
-  - component: {fileID: 1883311050548259617}
+  - component: {fileID: 1155034700485809338}
+  - component: {fileID: 1718082687314064199}
   m_Layer: 0
   m_Name: HomingZako
   m_TagString: Enemy
@@ -242,9 +243,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyData: {fileID: 11400000, guid: e1fcc32a3ff7d8e49b94d24f57c4e572, type: 2}
-  splineAnimate: {fileID: 0}
+  HP: 0
+  MaxHP: 0
+  splineAnimate: {fileID: 1718082687314064199}
+  speed: 0
+  startPosition: {x: 0, y: 0, z: 0}
+  endPosition: {x: 0, y: 0, z: 0}
+  movingRight: 1
   hasReachedEnd: 0
---- !u!114 &1883311050548259617
+--- !u!114 &1155034700485809338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171462749161945358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3c50979aa0f9845b00405103d91457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 4294123308616779956}
+--- !u!114 &1718082687314064199
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -258,12 +278,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Target: {fileID: 0}
   m_PlayOnAwake: 1
-  m_LoopMode: 0
+  m_LoopMode: 1
   m_Method: 0
-  m_Duration: 3
-  m_MaxSpeed: 3.4365654
+  m_Duration: 1
+  m_MaxSpeed: 10
   m_EasingMode: 0
-  m_AlignmentMode: 0
-  m_ObjectForwardAxis: 0
+  m_AlignmentMode: 1
+  m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
   m_StartOffset: 0

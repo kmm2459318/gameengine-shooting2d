@@ -105,7 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotData: {fileID: 11400000, guid: aadcec626f376a64d96f202e01363afb, type: 2}
   ReloadTime: 0.15
-  Damage: 10
+  Damage: 30
 --- !u!61 &1370167492345780921
 BoxCollider2D:
   m_ObjectHideFlags: 0

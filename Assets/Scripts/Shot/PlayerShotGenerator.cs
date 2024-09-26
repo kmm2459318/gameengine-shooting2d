@@ -13,7 +13,10 @@ public class PlayerShotGenerator : MonoBehaviour
 
     private GameObject currentBulletPrefab; // 現在の弾のプレハブ
 
-    public float Power = 1f; // 現在のレベル
+    public int Power = 1; // 現在のレベル
+    public float Reload = 1f; // 現在のレベル
+    int PowerUP = 1; // レベルアップ時の射撃間隔をどれだけ速くするか
+    float ReloadUP = 10f; // レベルアップ時の射撃間隔をどれだけ速くするか
     public int Coin = 0; // 現在のコイン数
 
     private float timeCounter = 1f;
@@ -58,11 +61,11 @@ public class PlayerShotGenerator : MonoBehaviour
         ShotController shotController = currentBulletPrefab.GetComponent<ShotController>();
         if (shotController != null)
         {
-            // リロード時間をPowerでスケーリング
+            // リロード時間をReloadでスケーリング
             float baseReloadTime = shotController.ReloadTime;
 
-            // Powerが大きいほどリロード時間が短くなる
-            reloadTime = baseReloadTime / (1 + Power / 10); // 例えば、Powerが10増えるごとにリロード時間が半分になるように調整
+            // Reloadが大きいほどリロード時間が短くなる
+            reloadTime = baseReloadTime / (1 + Reload / 10); // 例えば、Powerが10増えるごとにリロード時間が半分になるように調整
         }
     }
 
@@ -70,8 +73,12 @@ public class PlayerShotGenerator : MonoBehaviour
     {
         if (collision.tag == "Power")
         {
-            Power += 0.25f;
-
+            ShotController Shot = currentBulletPrefab.GetComponent<ShotController>();
+            Shot.Damage += PowerUP;
+        }
+        if(collision.tag == "Bonus")
+        {
+            Reload += ReloadUP;
             // Powerが増えたらリロード時間を再計算
             UpdateReloadTime();
         }

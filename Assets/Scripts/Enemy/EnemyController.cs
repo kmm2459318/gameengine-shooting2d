@@ -1,22 +1,28 @@
+using UnityEditor.SceneTemplate;
 using UnityEngine;
 using UnityEngine.Splines;
 
 public class EnemyController : MonoBehaviour
 {
+
     public EnemyData EnemyData;
-    int HP;
+    public int HP;
+    public int MaxHP;
 
     public SplineAnimate splineAnimate; // SplineAnimateをアタッチしたオブジェクトを設定
 
-    float speed; // 移動速度
-    private Vector3 startPosition;
-    private Vector3 endPosition; // 移動範囲の終点
-    private bool movingRight = true; // 最初から右方向に動く
+    public float speed; // 移動速度
+    public Vector3 startPosition;
+    public Vector3 endPosition; // 移動範囲の終点
+    public bool movingRight = true; // 最初から右方向に動く
     public bool hasReachedEnd = false;
+
 
     void Start()
     {
         HP = EnemyData.HP;
+        MaxHP = EnemyData.HP;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
         speed = EnemyData.speed;
 
         // 画面中央の位置を取得
@@ -29,55 +35,8 @@ public class EnemyController : MonoBehaviour
 
         // 初期位置を設定
         //transform.position = startPosition;
-        
+
         // movingRight は true のまま、右方向に最初から動かす
-    }
-
-    void Update()
-    {
-        Vector3 currentPosition = transform.position;
-
-        if ((splineAnimate == true))
-        {
-            // Spline上の進行度が1.0に達したかどうかを確認
-            if (splineAnimate.normalizedTime >= 1.0f && hasReachedEnd == false)
-            {
-                Debug.Log("Splineの終了に到達しました！");
-                // 終了時の処理をここに追加
-                hasReachedEnd = true; // 移動終了
-            }
-        }
-       
-
-        //横移動の処理
-        if (movingRight)
-        {
-            currentPosition.x += speed * Time.deltaTime;
-
-            // 終点に達したら方向を反転
-            if (currentPosition.x >= endPosition.x)
-            {
-                movingRight = false;
-            }
-        }
-        else
-        {
-            currentPosition.x -= speed * Time.deltaTime;
-
-            // 起点に達したら方向を反転
-            if (currentPosition.x <= startPosition.x)
-            {
-                movingRight = true;
-            }
-        }
-
-        transform.position = currentPosition;
-
-        if (HP <= 0)
-        {
-            DropItem();
-            Destroy(gameObject);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -102,11 +61,19 @@ public class EnemyController : MonoBehaviour
     //アイテムdropの処理
     private void DropItem()
     {
-        if (EnemyData.dropItemPrefab != null && Random.value < EnemyData.dropChance)
-        {
-            int DropItems = EnemyData.dropItemPrefab.Length;
-            Instantiate(EnemyData.dropItemPrefab[Random.Range(0,DropItems)], transform.position, Quaternion.identity);
-        }
+        if (Random.value < EnemyData.DropChance)
+            if (EnemyData.dropItemData != null && EnemyData.dropItemData.Length > 0)
+            {
+                foreach (var itemData in EnemyData.dropItemData)
+                {
+                    // dropChanceを使ってアイテムがドロップされるかどうかを判定
+                    if (Random.value < itemData.dropChance)
+                    {
+                        Instantiate(itemData.prefab, transform.position, Quaternion.identity);
+                        break; // 1つのアイテムをドロップしたら終了
+                    }
+                }
+            }
     }
 
     //ダメージの処理
@@ -117,6 +84,11 @@ public class EnemyController : MonoBehaviour
         {
             HP -= shotController.Damage;
             Debug.Log("Enemy hit! Remaining HP: " + HP);
+            if (HP <= 0)
+            {
+                DropItem();
+                Destroy(gameObject);
+            }
         }
     }
 }

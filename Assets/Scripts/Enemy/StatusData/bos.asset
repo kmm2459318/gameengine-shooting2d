@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edbefe03700f8e4f8c146b63145dac4, type: 3}
   m_Name: bos
   m_EditorClassIdentifier: 
-  HP: 200
+  HP: 100
   attackPower: 5
-  speed: 5
-  dropItemPrefab: {fileID: 5484025972343061538, guid: 432f63667902da7428f1d1befec5fc81, type: 3}
-  dropChance: 1
+  speed: 2
+  moveDistance: 1.5
+  DropChance: 1
+  dropItemData:
+  - {fileID: 11400000, guid: 02500c1322f780d498c3ddb4752d3d68, type: 2}
+  - {fileID: 11400000, guid: d4e3726019988934f988dda951ef6bad, type: 2}
+  - {fileID: 11400000, guid: 055da1b3860c0334a9b13a53c5675ac7, type: 2}

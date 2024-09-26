@@ -104,9 +104,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotData: {fileID: 11400000, guid: e2861951124f1584e9bddd97cf69caae, type: 2}
   ReloadTime: 2
-  Damage: 3
+  Damage: 15
   ShotNumber: 0
   ShotChance: 0.2
+  ShotCount: 1
 --- !u!61 &5424468291165018786
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -141,7 +142,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.004585482, y: 0.0018341988}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -151,7 +152,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.16666667, y: 0.5}
+  m_Size: {x: 0.10980676, y: 0.32758608}
   m_EdgeRadius: 0
 --- !u!50 &-6809765087856299363
 Rigidbody2D:

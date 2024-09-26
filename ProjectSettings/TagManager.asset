@@ -12,6 +12,8 @@ TagManager:
   - Power
   - HeelItem
   - HyperShot
+  - BossEnemy
+  - Bonus
   layers:
   - Default
   - TransparentFX

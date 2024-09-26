@@ -16,8 +16,8 @@ MonoBehaviour:
   attackPower: 5
   speed: 2
   moveDistance: 4
-  dropItemPrefab:
-  - {fileID: 5484025972343061538, guid: 432f63667902da7428f1d1befec5fc81, type: 3}
-  - {fileID: 8087400434226975634, guid: 45affa9002b2b4449a8b8c1247e4d6bd, type: 3}
-  - {fileID: 5753797105666919242, guid: 38096102d7d9f5e44ad313638e15d63b, type: 3}
-  dropChance: 0.3
+  DropChance: 0.4
+  dropItemData:
+  - {fileID: 11400000, guid: 02500c1322f780d498c3ddb4752d3d68, type: 2}
+  - {fileID: 11400000, guid: d4e3726019988934f988dda951ef6bad, type: 2}
+  - {fileID: 11400000, guid: 055da1b3860c0334a9b13a53c5675ac7, type: 2}

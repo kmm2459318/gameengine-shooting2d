@@ -10,16 +10,17 @@ public class CubeEnemyPos : MonoBehaviour
 
     public GameObject Enemy;
     public Transform GameObject;
+    public EnemyController EnemyData;
 
     void Start()
     {
-        EnemyController controller = Enemy.GetComponent<EnemyController>();
+        SlideMove controller = Enemy.GetComponent<SlideMove>();
         Vector2 pos = transform.position;
         for(int i = 0; i<=y;  i++)
         {
             for(int j= 0; j<=x; j++)
             {
-                controller.hasReachedEnd = true; // ˆÚ“®I—¹
+                EnemyData.hasReachedEnd = true; // ˆÚ“®I—¹
                 Vector2 EnemyPos = new Vector2(pos.x + j * Space_x , pos.y + i * Space_y);
                 Instantiate(Enemy, EnemyPos, Quaternion.identity, GameObject);
             }

@@ -4,23 +4,24 @@ using UnityEngine.EventSystems;
 public class EnemyShotController : MonoBehaviour
 {
     public ShotData shotData;
-    public float ReloadTime;//ËŒ‚ŠÔŠu‚Ì•Ï”
+    public float ReloadTime;//å°„æ’ƒé–“éš”ã®å¤‰æ•°
     public int Damage;
-    private Transform player; // ƒvƒŒƒCƒ„[‚ÌTransform
-    public int ShotNumber; //ƒVƒ‡ƒbƒg‚Ìí—Ş‚ğw’è‚·‚éF1A’Êí’e@2Aƒz[ƒ~ƒ“ƒO’e
-    public float ShotChance; // ƒVƒ‡ƒbƒgŠm—¦ (0.0 ` 1.0)
+    private Transform player; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Transform
+    public int ShotNumber; //ã‚·ãƒ§ãƒƒãƒˆã®ç¨®é¡ã‚’æŒ‡å®šã™ã‚‹ï¼š0ã€é€šå¸¸å¼¾ã€€1ã€ãƒ›ãƒ¼ãƒŸãƒ³ã‚°å¼¾ã€€2ã€æ‹¡æ•£å¼¾
+    public float ShotChance; // ã‚·ãƒ§ãƒƒãƒˆç¢ºç‡ (0.0 ï½ 1.0)
+    public int ShotCount = 1; // æ‹¡æ•£å¼¾ã®æ‰“ã¤å¼¾ã®æ•°
 
-    private Vector2 moveDirection; // ƒvƒŒƒCƒ„[‚Ö‚ÌˆÚ“®•ûŒü
+    private Vector2 moveDirection; // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¸ã®ç§»å‹•æ–¹å‘
     void Start()
     {
-        // ƒvƒŒƒCƒ„[‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
         Transform player = GameObject.FindWithTag("Player").transform;
 
         if (player != null)
         {
-            // ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğŒvZ
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’è¨ˆç®—
             Vector2 direction = (player.position - transform.position).normalized;
-            moveDirection = direction; // ”­Ë‚ÉˆÚ“®•ûŒü‚ğŠm’è
+            moveDirection = direction; // ç™ºå°„æ™‚ã«ç§»å‹•æ–¹å‘ã‚’ç¢ºå®š
         }
     }
 
@@ -28,23 +29,32 @@ public class EnemyShotController : MonoBehaviour
     {
         switch (ShotNumber)
         {
-            // «’Êí’e
+            // â†“é€šå¸¸å¼¾
             case 0: transform.position += new Vector3(0, shotData.speed, 0) * Time.deltaTime; break;
-            // «ƒz[ƒ~ƒ“ƒOƒVƒ‡ƒbƒgAŠm’è‚µ‚½•ûŒü‚É’e‚ğˆÚ“®
+            // â†“ãƒ›ãƒ¼ãƒŸãƒ³ã‚°ã‚·ãƒ§ãƒƒãƒˆã€ç¢ºå®šã—ãŸæ–¹å‘ã«å¼¾ã‚’ç§»å‹•
             case 1: transform.Translate(moveDirection * shotData.speed * Time.deltaTime); break;
+            // â†“
+            case 2:
+                        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+                        if (rb != null)
+                        {
+                            Vector2 direction = gameObject.transform.up;  // å¼¾ã®å‰æ–¹æ–¹å‘ï¼ˆupï¼‰ãŒé£›ã¶æ–¹å‘
+                            rb.linearVelocity = direction * shotData.speed;
+                        }
+                break;
 
         }
-        //‰æ–ÊŠO‚Éo‚½‚çƒIƒuƒWƒFƒNƒg‚ğÁ‚·
-        if (transform.position.y <= -5)
+        //ç”»é¢å¤–ã«å‡ºãŸã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¶ˆã™
+        if (transform.position.y <= -5ã€€|| transform.position.y >= 5 || transform.position.x >= 5 || transform.position.x <= -5)
         {
             Destroy(gameObject);
         }
     }
 
-    // ‰½‚©‚É“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
+    // ä½•ã‹ã«å½“ãŸã£ãŸã¨ãã®å‡¦ç†
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // ’e‚ª‰½‚©‚É“–‚½‚Á‚½‚ç”j‰ó‚·‚é
+        // å¼¾ãŒä½•ã‹ã«å½“ãŸã£ãŸã‚‰ç ´å£Šã™ã‚‹
         Destroy(gameObject);
     }
 }

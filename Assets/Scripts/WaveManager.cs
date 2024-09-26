@@ -22,7 +22,6 @@ public class WaveManager : MonoBehaviour
     {
         //画面内にあるEnemyタグを持った敵キャラをカウントする
         Count = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        Debug.Log(Count);
         if(Count == 0)
         {
             NowWaveSet();
