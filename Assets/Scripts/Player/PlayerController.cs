@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     Vector2 currentPos;//現在のマウスの位置
 
     public SplineAnimate splineAnimate; // SplineAnimateをアタッチしたオブジェクトを設定
+    public bool isSplineFinished = false;
+
+    public GameObject SceneController;
 
     //体力関係
     int MaxHP = 100;
@@ -42,31 +45,44 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Spline上の進行度が1.0に達したかどうかを確認
-        if (splineAnimate.normalizedTime >= 1.0f)
+        SceneController sceneController = SceneController.GetComponent<SceneController>();
+        if (sceneController.StartGame == true)
         {
-            Debug.Log("Splineの終了に到達しました！");
-            // スワイプによる移動処理
-            if (Input.GetMouseButtonDown(0))
+            splineAnimate.Play();
+            // Spline上の進行度が1.0に達したかどうかを確認
+            if (!isSplineFinished && splineAnimate.normalizedTime >= 1.0f)
             {
+                Debug.Log("Splineの終了に到達しました！");
+                isSplineFinished = true;
+
+                // 追加: Spline終了時にタッチ位置をリセット
                 previousPos = Input.mousePosition;
             }
-            if (Input.GetMouseButton(0))
+
+            // スワイプによる移動処理はSpline終了後のみ実行
+            if (isSplineFinished)
             {
-                // スワイプによる移動距離を取得
-                currentPos = Input.mousePosition;
-                float diffDistanceX = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-                float diffDistanceY = (currentPos.y - previousPos.y) / Screen.width * LOAD_WIDTH;
+                if (Input.GetMouseButtonDown(0))
+                {
+                    previousPos = Input.mousePosition;
+                }
 
-                // 次のローカルx座標を設定 ※道の外にでないように
-                float newX = Mathf.Clamp(transform.localPosition.x + diffDistanceX, -MOVE_MAX_X, MOVE_MAX_X);
-                float newY = Mathf.Clamp(transform.localPosition.y + diffDistanceY, -MOVE_MAX_Y, MOVE_MAX_Y);
-                transform.localPosition = new Vector3(newX, newY, 0);
+                if (Input.GetMouseButton(0))
+                {
+                    // スワイプによる移動距離を取得
+                    currentPos = Input.mousePosition;
+                    float diffDistanceX = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
+                    float diffDistanceY = (currentPos.y - previousPos.y) / Screen.width * LOAD_WIDTH;
 
-                // タップ位置を更新
-                previousPos = currentPos;
+                    // 次のローカルx座標を設定 ※道の外にでないように
+                    float newX = Mathf.Clamp(transform.localPosition.x + diffDistanceX, -MOVE_MAX_X, MOVE_MAX_X);
+                    float newY = Mathf.Clamp(transform.localPosition.y + diffDistanceY, -MOVE_MAX_Y, MOVE_MAX_Y);
+                    transform.localPosition = new Vector3(newX, newY, 0);
+
+                    // タップ位置を更新
+                    previousPos = currentPos;
+                }
             }
-
 
             if (HP <= 0)
             {
@@ -109,6 +125,7 @@ public class PlayerController : MonoBehaviour
             {
                 HP = MaxHP;
             }
+            Destroy(collision.gameObject);
         }
         UpdateHPBar();
     }

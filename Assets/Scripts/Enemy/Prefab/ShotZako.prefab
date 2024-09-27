@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89f4f4862a55974c8cace002a3ba499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyData: {fileID: 11400000, guid: e1fcc32a3ff7d8e49b94d24f57c4e572, type: 2}
+  EnemyData: {fileID: 11400000, guid: fd5c4a97bf1bb3141a787178291ed966, type: 2}
   HP: 0
   MaxHP: 0
   splineAnimate: {fileID: 6339796656548446026}
@@ -162,6 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 2601455339114270470}
+  BonusEnemy: 0
+  BoundLimit: 10
+  flySpeed: 2
+  destroyTime: 3
 --- !u!114 &6339796656548446026
 MonoBehaviour:
   m_ObjectHideFlags: 0

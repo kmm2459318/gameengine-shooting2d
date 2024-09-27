@@ -5789,6 +5789,10 @@ PrefabInstance:
       propertyPath: m_EasingMode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5637717725953551526, guid: 060d0b1896ec2c042965c5360432a328, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1721779808444878285, guid: a39e2e16ef0c1b0499455879ea848f0e, type: 3}
     - target: {fileID: 8584574546049203886, guid: 060d0b1896ec2c042965c5360432a328, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.1208887

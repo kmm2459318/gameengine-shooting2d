@@ -6,6 +6,9 @@ public class PlayerShotGenerator : MonoBehaviour
     // 弾を発射するオブジェクトの位置を取得
     public Transform firePoint;
 
+    //プレイヤーがspline移動中かを取得するため
+    public GameObject Player;
+
     // 弾をオブジェクトとして取得
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
@@ -13,10 +16,9 @@ public class PlayerShotGenerator : MonoBehaviour
 
     private GameObject currentBulletPrefab; // 現在の弾のプレハブ
 
-    public int Power = 1; // 現在のレベル
-    public float Reload = 1f; // 現在のレベル
-    int PowerUP = 1; // レベルアップ時の射撃間隔をどれだけ速くするか
-    float ReloadUP = 10f; // レベルアップ時の射撃間隔をどれだけ速くするか
+    public float Reload = 1f; // リロードの速さ
+    float PowerUP = 0.5f; // 通常レベルアップ時の射撃間隔をどれだけ速くするか
+    float ReloadUP = 3; // ボーナスレベルアップ時の射撃間隔をどれだけ速くするか
     public int Coin = 0; // 現在のコイン数
 
     private float timeCounter = 1f;
@@ -31,8 +33,9 @@ public class PlayerShotGenerator : MonoBehaviour
 
     void Update()
     {
+        PlayerController player = Player.GetComponent<PlayerController>();
         timeCounter += Time.deltaTime;
-        if (Input.GetMouseButton(0) && timeCounter > reloadTime)
+        if (Input.GetMouseButton(0) && timeCounter > reloadTime && player.isSplineFinished)
         {
             timeCounter = 0;
             // 弾を発射
@@ -73,19 +76,23 @@ public class PlayerShotGenerator : MonoBehaviour
     {
         if (collision.tag == "Power")
         {
-            ShotController Shot = currentBulletPrefab.GetComponent<ShotController>();
-            Shot.Damage += PowerUP;
+            Reload += PowerUP;
+            // Powerが増えたらリロード時間を再計算
+            UpdateReloadTime();
+            Destroy(collision.gameObject);
         }
         if(collision.tag == "Bonus")
         {
             Reload += ReloadUP;
             // Powerが増えたらリロード時間を再計算
             UpdateReloadTime();
+            Destroy(collision.gameObject);
         }
         if(collision.tag == "coin")
         {
             Coin++;
             Debug.Log(Coin);
+            Destroy(collision.gameObject);
         }
     }
 

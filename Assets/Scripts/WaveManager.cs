@@ -10,6 +10,7 @@ public class WaveManager : MonoBehaviour
     int MaxWave;
     public GameObject[] Wave;
     public TextMeshProUGUI TextMeshPro;
+    public bool OnPlay = false;
 
 
     void Start()
@@ -30,21 +31,25 @@ public class WaveManager : MonoBehaviour
 
     private void NowWaveSet()
     {
-        NowWave++;
-        if ( NowWave >= Wave.Length + 1 )
+        if(OnPlay == true)
         {
-            Debug.Log("‚­‚è‚ ");
-            SceneManager.LoadScene("GameClear");
+            NowWave++;
+            if (NowWave >= Wave.Length + 1)
+            {
+                Debug.Log("‚­‚è‚ ");
+                SceneManager.LoadScene("GameClear");
+            }
+            switch (NowWave)
+            {
+                case 1: Wave[0].SetActive(true); break;
+                case 2: Wave[1].SetActive(true); break;
+                case 3: Wave[2].SetActive(true); break;
+                case 4: Wave[3].SetActive(true); break;
+                    //case 5: Wave[4].SetActive(true); break;
+            }
+            TextMeshPro.SetText(NowWave.ToString() + "/" + MaxWave.ToString());
         }
-        switch (NowWave)
-        {
-            case 1: Wave[0].SetActive(true); break;
-            case 2: Wave[1].SetActive(true); break;
-            case 3: Wave[2].SetActive(true); break;
-            case 4: Wave[3].SetActive(true); break;
-            //case 5: Wave[4].SetActive(true); break;
-        }
-        TextMeshPro.SetText(NowWave.ToString() + "/" + MaxWave.ToString());
+        
         
     }
 }
