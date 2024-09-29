@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6edbefe03700f8e4f8c146b63145dac4, type: 3}
-  m_Name: Bonustyuubos
+  m_Name: Bounusbos
   m_EditorClassIdentifier: 
-  HP: 30
+  HP: 100
   attackPower: 5
-  speed: 2.5
-  moveDistance: 0
+  speed: 2
+  moveDistance: 1.5
   DropChance: 1
   dropItemData:
-  - {fileID: 11400000, guid: d007282152afe8e4096e95c10e6c7360, type: 2}
+  - {fileID: 11400000, guid: 32a99b136b66221499890c747e5bac07, type: 2}

@@ -8,6 +8,8 @@ public class ShotController : MonoBehaviour
     public ShotData shotData;
     public float ReloadTime;//ËŒ‚ŠÔŠu‚Ì•Ï”
     public int Damage;
+    public AudioSource audioSource;
+    public AudioClip ShotSE;
     
 
     void Update()

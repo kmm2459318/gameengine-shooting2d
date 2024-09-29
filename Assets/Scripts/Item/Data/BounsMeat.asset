@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6edbefe03700f8e4f8c146b63145dac4, type: 3}
-  m_Name: Bonustyuubos
+  m_Script: {fileID: 11500000, guid: a1b1921218f4f634097f433c0b2eee99, type: 3}
+  m_Name: BounsMeat
   m_EditorClassIdentifier: 
-  HP: 30
-  attackPower: 5
-  speed: 2.5
-  moveDistance: 0
-  DropChance: 1
-  dropItemData:
-  - {fileID: 11400000, guid: d007282152afe8e4096e95c10e6c7360, type: 2}
+  prefab: {fileID: 5753797105666919242, guid: 8566757accdf5b349b84aad6420f3d23, type: 3}
+  dropChance: 1

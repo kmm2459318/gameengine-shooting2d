@@ -34,12 +34,14 @@ public class PlayerShotGenerator : MonoBehaviour
     void Update()
     {
         PlayerController player = Player.GetComponent<PlayerController>();
+        ShotController shotController = currentBulletPrefab.GetComponent<ShotController>();
         timeCounter += Time.deltaTime;
-        if (Input.GetMouseButton(0) && timeCounter > reloadTime && player.isSplineFinished)
+        if (timeCounter > reloadTime && player.isSplineFinished)
         {
             timeCounter = 0;
             // ’e‚ð”­ŽË
             Instantiate(currentBulletPrefab, firePoint.position, firePoint.rotation);
+            shotController.audioSource.PlayOneShot(shotController.ShotSE);
         }
     }
 

@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
             if (HP <= 0)
             {
                 Debug.Log("aaa");
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
 
             //HP‚ÌXV
@@ -125,6 +125,12 @@ public class PlayerController : MonoBehaviour
             {
                 HP = MaxHP;
             }
+            Destroy(collision.gameObject);
+        }
+        if (collision.tag == "BonusHeelItem")
+        {
+            Destroy(collision.gameObject);
+            HP = MaxHP;
             Destroy(collision.gameObject);
         }
         UpdateHPBar();
