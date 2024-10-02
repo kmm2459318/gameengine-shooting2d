@@ -21,20 +21,20 @@ public class ShotController : MonoBehaviour
         }
     }
 
-    //•KE‹Z‚ğ‘Å‚Á‚½‚Ìˆ—
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-            PlayerController playerController = collision.GetComponent<PlayerController>();
-            if (playerController != null)
-            {
-                //Œ»İHP‚ªÁ”ïHP‚æ‚è‚à‘½‚©‚Á‚½‚ç
-                if(playerController.HP > shotData.Compensation)
-                {
-                    playerController.HP -= shotData.Compensation;
-                }
-            }
-        }
-    }
+    ////•KE‹Z‚ğ‘Å‚Á‚½‚Ìˆ—
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if(collision.tag == "Player")
+    //    {
+    //        PlayerController playerController = collision.GetComponent<PlayerController>();
+    //        if (playerController != null)
+    //        {
+    //            //Œ»İHP‚ªÁ”ïHP‚æ‚è‚à‘½‚©‚Á‚½‚ç
+    //            if(playerController.HP > shotData.Compensation)
+    //            {
+    //                playerController.HP -= shotData.Compensation;
+    //            }
+    //        }
+    //    }
+    //}
 }

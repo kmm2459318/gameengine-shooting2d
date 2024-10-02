@@ -11,6 +11,7 @@ public class WaveManager : MonoBehaviour
     public GameObject[] Wave;
     public TextMeshProUGUI TextMeshPro;
     public bool OnPlay = false;
+    public bool IsClear = false;
 
 
     void Start()
@@ -37,7 +38,7 @@ public class WaveManager : MonoBehaviour
             if (NowWave >= Wave.Length + 1)
             {
                 Debug.Log("‚­‚è‚ ");
-                SceneManager.LoadScene("GameClear");
+                IsClear = true;
             }
             switch (NowWave)
             {

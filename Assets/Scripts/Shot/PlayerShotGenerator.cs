@@ -107,4 +107,6 @@ public class PlayerShotGenerator : MonoBehaviour
             Instantiate(HyperShot, firePoint.position, firePoint.rotation);
         }
     }
+
+   
 }

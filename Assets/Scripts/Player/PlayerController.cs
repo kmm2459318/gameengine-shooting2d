@@ -12,9 +12,12 @@ public class PlayerController : MonoBehaviour
     const float MOVE_MAX_Y = 4.5f;//横方向の移動可能距離
     Vector2 previousPos;//1f前のマウスの位置
     Vector2 currentPos;//現在のマウスの位置
+    public float flySpeed = 0.005f;   // 上に飛ぶスピード
+    public float destroyTime = 5f; // 消えるまでの時間
 
     public SplineAnimate splineAnimate; // SplineAnimateをアタッチしたオブジェクトを設定
     public bool isSplineFinished = false;
+    public bool NewStage = false;
 
     public GameObject SceneController;
 
@@ -50,12 +53,13 @@ public class PlayerController : MonoBehaviour
         {
             splineAnimate.Play();
             // Spline上の進行度が1.0に達したかどうかを確認
-            if (!isSplineFinished && splineAnimate.normalizedTime >= 1.0f)
+            if (!isSplineFinished && splineAnimate.normalizedTime >= 1.0f && NewStage == false)
             {
                 Debug.Log("Splineの終了に到達しました！");
                 isSplineFinished = true;
+                NewStage = true;
 
-                // 追加: Spline終了時にタッチ位置をリセット
+                // Spline終了時にタッチ位置をリセット
                 previousPos = Input.mousePosition;
             }
 
@@ -71,8 +75,8 @@ public class PlayerController : MonoBehaviour
                 {
                     // スワイプによる移動距離を取得
                     currentPos = Input.mousePosition;
-                    float diffDistanceX = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH;
-                    float diffDistanceY = (currentPos.y - previousPos.y) / Screen.width * LOAD_WIDTH;
+                    float diffDistanceX = (currentPos.x - previousPos.x) / Screen.width * LOAD_WIDTH * 0.3f;
+                    float diffDistanceY = (currentPos.y - previousPos.y) / Screen.width * LOAD_WIDTH * 0.3f;
 
                     // 次のローカルx座標を設定 ※道の外にでないように
                     float newX = Mathf.Clamp(transform.localPosition.x + diffDistanceX, -MOVE_MAX_X, MOVE_MAX_X);
@@ -158,5 +162,26 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(blinkInterval);
         }
         Hit = false;
+    }
+
+    public void GameClear()
+    {
+        StartCoroutine(FlyAndDestroyCoroutine());
+    }
+    public IEnumerator FlyAndDestroyCoroutine()
+    {
+        float elapsedTime = 0f;
+
+        // 経過時間がdestroyTimeに達するまでループ
+        while (elapsedTime < destroyTime)
+        {
+            // 上方向に移動
+            transform.Translate(Vector3.up * flySpeed * Time.deltaTime);
+            elapsedTime += Time.deltaTime;
+            yield return null; // 次のフレームまで待機
+        }
+
+        // 一定時間経過後にオブジェクトを非表示
+        gameObject.SetActive(false);
     }
 }
