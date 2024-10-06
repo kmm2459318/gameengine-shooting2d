@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerShotGenerator : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class PlayerShotGenerator : MonoBehaviour
     private float timeCounter = 1f;
     private float reloadTime = 1.0f; // ‰Šú’l‚Æ‚µ‚Ä1•b
 
+    public AudioSource AudioSource;
     void Start()
     {
         // ‰Šú’e‚ğbulletPrefab1‚Éİ’è
@@ -76,11 +78,17 @@ public class PlayerShotGenerator : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+
+        Item item = collision.GetComponent<Item>();
         if (collision.tag == "Power")
         {
+
             Reload += PowerUP;
             // Power‚ª‘‚¦‚½‚çƒŠƒ[ƒhŠÔ‚ğÄŒvZ
             UpdateReloadTime();
+            AudioSource.Stop(); // Ä¶’†‚Ì‰¹‚ğ’â~
+            SetVolume(AudioSource.volume = 0.5f); // ‰¹—Ê’²®
+            AudioSource.PlayOneShot(item.GetItem);
             Destroy(collision.gameObject);
         }
         if(collision.tag == "Bonus")
@@ -88,12 +96,32 @@ public class PlayerShotGenerator : MonoBehaviour
             Reload += ReloadUP;
             // Power‚ª‘‚¦‚½‚çƒŠƒ[ƒhŠÔ‚ğÄŒvZ
             UpdateReloadTime();
+            AudioSource.Stop(); // Ä¶’†‚Ì‰¹‚ğ’â~
+            SetVolume(AudioSource.volume = 0.5f); // ‰¹—Ê’²®
+            AudioSource.PlayOneShot(item.GetItem);
             Destroy(collision.gameObject);
         }
         if(collision.tag == "coin")
         {
             Coin++;
             Debug.Log(Coin);
+            AudioSource.Stop(); // Ä¶’†‚Ì‰¹‚ğ’â~
+            SetVolume(AudioSource.volume = 0.2f); // ‰¹—Ê’²®
+            AudioSource.PlayOneShot(item.GetItem);
+            Destroy(collision.gameObject);
+        }
+        if(collision.tag == "HeelItem")
+        {
+            AudioSource.Stop(); // Ä¶’†‚Ì‰¹‚ğ’â~
+            SetVolume(AudioSource.volume = 0.5f); // ‰¹—Ê’²®
+            AudioSource.PlayOneShot(item.GetItem);
+            Destroy(collision.gameObject);
+        }
+        if (collision.tag == "BonusHeelItem")
+        {
+            AudioSource.Stop(); // Ä¶’†‚Ì‰¹‚ğ’â~
+            SetVolume(AudioSource.volume = 0.5f); // ‰¹—Ê’²®
+            AudioSource.PlayOneShot(item.GetItem);
             Destroy(collision.gameObject);
         }
     }
@@ -108,5 +136,13 @@ public class PlayerShotGenerator : MonoBehaviour
         }
     }
 
-   
+    // ‰¹—Ê‚ğ“®“I‚É’²®‚·‚éƒƒ\ƒbƒh
+    public void SetVolume(float volume)
+    {
+        if (AudioSource != null)
+        {
+            AudioSource.volume = Mathf.Clamp(volume, 0f, 1f); // 0.0`1.0‚Ì”ÍˆÍ‚Å‰¹—Ê‚ğİ’è
+        }
+    }
+
 }

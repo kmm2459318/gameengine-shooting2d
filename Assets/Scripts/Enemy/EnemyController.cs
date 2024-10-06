@@ -86,6 +86,14 @@ public class EnemyController : MonoBehaviour
             if (HP <= 0)
             {
                 DropItem();
+
+                // EnemyAudioを通じて音を再生
+                if (EnemyAudio.Instance != null && EnemyAudio.Instance.Death != null)
+                {
+                    EnemyAudio.Instance.PlayDeathSound(transform.position);
+                }
+
+                // 敵オブジェクト自体は即座に削除
                 Destroy(gameObject);
             }
         }

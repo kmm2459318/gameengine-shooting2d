@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
 
     public GameObject SceneController;
 
+    public AudioSource AudioSource;
+    public AudioClip Damege;
+
     //‘Ì—ÍŠÖŒW
     int MaxHP = 100;
     public float HP = 0; // ShotController‚Å’l‚ğ“üè‚·‚é‚½‚ßpublic
@@ -108,6 +111,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Enemy");
                 HP -= EnemyDamege;
+                AudioSource.PlayOneShot(Damege);
                 StartCoroutine(Blink()); // “_–Å‚ÌŒÄ‚Ño‚µ
             }
             //“G‚Ì’e
@@ -117,6 +121,7 @@ public class PlayerController : MonoBehaviour
                 Destroy(collision.gameObject);
                 Debug.Log("Shot");
                 HP -= EnemyShot.Damage;
+                AudioSource.PlayOneShot(Damege);
                 StartCoroutine(Blink());
             }
         }
